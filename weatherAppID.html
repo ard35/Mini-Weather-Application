@@ -1,0 +1,60 @@
+<html>
+<head>
+    <script src="jquery-1.7.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnGetWeather').click(function () {
+                var resultElement = $('#resultDiv');
+				var requestData = $('#txtCity').val() + ',' + $('#txtCountry').val();
+                var APPIDkey = "6997fa3c80d6dbd6c24e2abe703361a4"
+				var temp;
+				
+					
+				$.ajax({
+                    url: 'http://api.openweathermap.org/data/2.5/weather?q=' + $('#txtCity').val() + 
+					',' + $('#txtCountry').val() + '&units=imperial' + '&appid=6997fa3c80d6dbd6c24e2abe703361a4',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+						if (data.data !=null)
+						{
+							resultElement.html(data.message);
+						}
+						else{
+                           resultElement.html('Weather: ' + data.weather[0].main + 
+						   '<br/>' + 'Description: ' + data.weather[0].description +
+						   '<br/>' + 'Temperature: ' + data.main.temp + ' Fahrenheits');
+						   temp = data.main.temp;
+						   if (temp < 50.00) {
+								$('body').css('background', '#A5EBF1');
+											}
+							else if (temp >= 51.00 && temp < 75.00) {
+								$('body').css('background', '#74E5B8');
+								}
+							else if (temp >= 75.01) {
+							$('body').css('background', '#F5F441');
+							}
+						}
+				 }
+		});﻿				
+	});
+});
+    </script>
+</head>
+<body style="font-family:Arial">
+    <table>
+        <tr>
+            <td>City</td>
+            <td><input type="text" id="txtCity" /></td>
+        </tr>
+        <tr>
+            <td>Country</td>
+            <td><input type="text" id="txtCountry" /></td>
+        </tr>
+    </table>
+    <input type="button" id="btnGetWeather" value="Get Weather Data">
+    <br /><br />
+    <div id="resultDiv">
+    </div>
+</body>
+</html>
